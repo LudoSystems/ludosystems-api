@@ -1,0 +1,161 @@
+package com.abbieschenk.ludobaum.node;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.abbieschenk.ludobaum.nodeattribute.NodeAttribute;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+/**
+ * Represents a node entity in the Ludobaum graph, and in the associated
+ * database.
+ * 
+ * Note that {@link #attributes}, {@link #children}, and {@link #parents} are
+ * all lazy-loaded. This means the general way to access Nodes should be through
+ * a {@link NodeService}.
+ * 
+ * @author abbie
+ *
+ */
+@Entity
+public class Node {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	private Long posX;
+	private Long posY;
+
+	@JsonManagedReference
+	@OneToMany(mappedBy = "node", fetch = FetchType.LAZY)
+	private Set<NodeAttribute> attributes = new HashSet<>();
+
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "node_connection", joinColumns = { @JoinColumn(name = "tail_node_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "head_node_id") })
+	private Set<Node> children = new HashSet<>();
+
+	@JsonIgnore
+	@ManyToMany(mappedBy = "children", fetch = FetchType.LAZY)
+	private Set<Node> parents = new HashSet<>();
+
+	public Node() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getPosX() {
+		return posX;
+	}
+
+	public void setPosX(Long posX) {
+		this.posX = posX;
+	}
+
+	public Long getPosY() {
+		return posY;
+	}
+
+	public void setPosY(Long posY) {
+		this.posY = posY;
+	}
+
+	/**
+	 * Gets the attributes in the Ludobaum Node graph mapped by the node_connection
+	 * table. Note that these are lazy-loaded and must be dealt with accordingly,
+	 * likely with a {@link Transactional} annotation on the method.
+	 * 
+	 * @return The children of this node.
+	 * 
+	 */
+	public Set<NodeAttribute> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(Set<NodeAttribute> attributes) {
+		this.attributes = attributes;
+	}
+
+	/**
+	 * Gets the children in the Ludobaum Node graph mapped by the node_connection
+	 * table. Note that these are lazy-loaded and must be dealt with accordingly,
+	 * likely with a {@link Transactional} annotation on the method.
+	 * 
+	 * @return The children of this node.
+	 * 
+	 */
+	public Set<Node> getChildren() {
+		return children;
+	}
+
+	public void setChildren(Set<Node> children) {
+		this.children = children;
+	}
+
+	/**
+	 * Gets the parents in the Ludobaum Node graph mapped by the node_connection
+	 * table. Note that these are lazy-loaded and must be dealt with accordingly.
+	 * 
+	 * @return The parents of this node.
+	 * 
+	 */
+	public Set<Node> getParents() {
+		return parents;
+	}
+
+	public void setParents(Set<Node> parents) {
+		this.parents = parents;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+
+		if (this == o) {
+			return true;
+		}
+
+		if (!(o instanceof Node)) {
+			return false;
+		}
+
+		Node node = (Node) o;
+
+		return Objects.equals(this.id, node.id) && Objects.equals(this.getPosX(), node.getPosX())
+				&& Objects.equals(this.getPosY(), node.getPosY());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.id, this.getPosX(), this.getPosY());
+	}
+
+	@Override
+	public String toString() {
+		return "Node{id=" + this.id + ", pos-x=" + this.getPosX() + ", pos-y=" + this.getPosY() + "}";
+	}
+
+}
