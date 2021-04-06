@@ -49,27 +49,27 @@ class NodeController {
 
     @PostMapping(PATH)
     public ResponseEntity<?> newNode(@RequestBody Node node) {
-        EntityModel<Node> entityModel;
+        EntityModel<Node> entityModel = assembler.toModel(service.addNode(node));
 
-        entityModel = assembler.toModel(service.addNode(node));
-
-        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
+        return ResponseEntity.created(
+                entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 
     @GetMapping(PATH_ID)
-    EntityModel<Node> one(@PathVariable Long id) {
+    public EntityModel<Node> one(@PathVariable Long id) {
         return assembler.toModel(service.getNode(id));
     }
 
     @PutMapping(PATH_ID)
-    ResponseEntity<?> replaceNode(@RequestBody Node node, @PathVariable Long id) {
+    public ResponseEntity<?> replaceNode(@RequestBody Node node, @PathVariable Long id) {
         EntityModel<Node> entityModel = assembler.toModel(service.replaceNode(node, id));
 
-        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
+        return ResponseEntity.created(
+                entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 
     @DeleteMapping(PATH_ID)
-    ResponseEntity<?> deleteNode(@PathVariable Long id) {
+    public ResponseEntity<?> deleteNode(@PathVariable Long id) {
         service.deleteNode(id);
 
         return ResponseEntity.noContent().build();
