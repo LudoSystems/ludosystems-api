@@ -1,10 +1,10 @@
 package com.abbieschenk.ludobaum.node;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * A {@link JpaRepository} for {@link Node} entities.
@@ -28,7 +28,7 @@ interface NodeRepository extends JpaRepository<Node, Long> {
 			+ "JOIN FETCH a.list l " //
 			+ "JOIN FETCH l.elements " //
 			+ "WHERE n.id = (:id)")
-	public Optional<Node> findByIdAndLoad(Long id);
+	Optional<Node> findByIdAndLoad(Long id);
 
 	/**
 	 * Find all {@link Node}s in the database, and load all of their lazy-loaded
@@ -36,12 +36,12 @@ interface NodeRepository extends JpaRepository<Node, Long> {
 	 * 
 	 * @return The {@link Node}s in the database.
 	 */
-	@Query("SELECT n " //
+	@Query("SELECT DISTINCT n " //
 			+ "FROM Node n " //
-			+ "JOIN FETCH n.attributes AS a " //
-			+ "JOIN FETCH n.children " //
-			+ "JOIN FETCH a.list l " //
-			+ "JOIN FETCH l.elements")
-	public List<Node> findAllAndLoad();
+			+ "LEFT JOIN FETCH n.attributes AS a " //
+			+ "LEFT JOIN FETCH n.children " //
+			+ "LEFT JOIN FETCH a.list l " //
+			+ "LEFT JOIN FETCH l.elements")
+	Set<Node> findAllAndLoad();
 
 }

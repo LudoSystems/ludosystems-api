@@ -1,9 +1,9 @@
 package com.abbieschenk.ludobaum.node;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 /**
  * Implementation of {@link NodeService}.
@@ -22,7 +22,7 @@ public class NodeServiceImpl implements NodeService {
 	}
 
 	@Override
-	public List<Node> getNodes() {
+	public Set<Node> getNodes() {
 		return repository.findAllAndLoad();
 	}
 

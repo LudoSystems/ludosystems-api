@@ -1,6 +1,6 @@
 package com.abbieschenk.ludobaum.node;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Service used to retrieve and interact with {@link Node} entities.
@@ -15,7 +15,7 @@ public interface NodeService {
 	 * 
 	 * @return A list of all {@link Node}s.
 	 */
-	public List<Node> getNodes();
+	Set<Node> getNodes();
 
 	/**
 	 * Retrieve a {@link Node} by its ID.
@@ -24,14 +24,14 @@ public interface NodeService {
 	 * @return The {@link Node}
 	 * 
 	 */
-	public Node getNode(Long id);
+	Node getNode(Long id);
 
 	/**
 	 * Delete the {@link Node} by its ID.
 	 * 
 	 * @param id The ID of the {@link Node} to delete
 	 */
-	public void deleteNode(Long id);
+	void deleteNode(Long id);
 
 	/**
 	 * Add a new {@link Node} and persist it to the database.
@@ -39,7 +39,7 @@ public interface NodeService {
 	 * @param node The {@link Node} to save to the database
 	 * @return The saved {@link Node}
 	 */
-	public Node addNode(Node node);
+	Node addNode(Node node);
 
 	/**
 	 * Replace an existing {@link Node} with a new Node by its ID. If no Node with
@@ -49,5 +49,5 @@ public interface NodeService {
 	 * @param id   The existing {@link Node}'s ID
 	 * @return The replaced {@link Node}
 	 */
-	public Node replaceNode(Node node, Long id);
+	Node replaceNode(Node node, Long id);
 }
