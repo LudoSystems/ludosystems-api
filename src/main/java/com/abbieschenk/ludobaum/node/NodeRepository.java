@@ -2,46 +2,63 @@ package com.abbieschenk.ludobaum.node;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.Optional;
 import java.util.Set;
 
 /**
  * A {@link JpaRepository} for {@link Node} entities.
- * 
- * @author abbie
  *
+ * @author abbie
  */
+@PreAuthorize("hasAuthority('USER')")
 interface NodeRepository extends JpaRepository<Node, Long> {
 
-	/**
-	 * Find a {@link Node} by its ID in the database, and load all of its
-	 * lazy-loaded collections.
-	 * 
-	 * @param id The id of the {@link Node}
-	 * @return The {@link Node} wrapped in an {@link Optional}
-	 */
-	@Query("SELECT n " //
-			+ "FROM Node n " //
-			+ "JOIN FETCH n.attributes AS a " //
-			+ "JOIN FETCH n.children " //
-			+ "JOIN FETCH a.list l " //
-			+ "JOIN FETCH l.elements " //
-			+ "WHERE n.id = (:id)")
-	Optional<Node> findByIdAndLoad(Long id);
+    /**
+     * Find a {@link Node} by its ID in the database, and load all of its
+     * lazy-loaded collections.
+     *
+     * @param id The id of the {@link Node}
+     * @return The {@link Node} wrapped in an {@link Optional}
+     */
+    @Query("SELECT n " //
+            + "FROM Node n " //
+            + "JOIN FETCH n.attributes AS a " //
+            + "JOIN FETCH n.children " //
+            + "JOIN FETCH a.list l " //
+            + "JOIN FETCH l.elements " //
+            + "WHERE n.id = (:id)")
+    @PreAuthorize("@nodeRepository.findById(#id)?.user?.name == authentication?.name")
+    Optional<Node> findByIdAndLoad(@Param("id") Long id);
 
-	/**
-	 * Find all {@link Node}s in the database, and load all of their lazy-loaded
-	 * collections.
-	 * 
-	 * @return The {@link Node}s in the database.
-	 */
-	@Query("SELECT DISTINCT n " //
-			+ "FROM Node n " //
-			+ "LEFT JOIN FETCH n.attributes AS a " //
-			+ "LEFT JOIN FETCH n.children " //
-			+ "LEFT JOIN FETCH a.list l " //
-			+ "LEFT JOIN FETCH l.elements")
-	Set<Node> findAllAndLoad();
+    /**
+     * Find all {@link Node}s in the database, and load all of their lazy-loaded
+     * collections.
+     *
+     * @return The {@link Node}s in the database.
+     */
+    @Query("SELECT DISTINCT n " //
+            + "FROM Node n " //
+            + "LEFT JOIN FETCH n.attributes AS a " //
+            + "LEFT JOIN FETCH n.children " //
+            + "LEFT JOIN FETCH a.list l " //
+            + "LEFT JOIN FETCH l.elements")
+    @PostFilter("filterObject.user?.name == authentication.name")
+    Set<Node> findAllAndLoad();
+
+    @Override
+    @PreAuthorize("#node?.user?.name == authentication?.name")
+    void delete(@Param("node") Node node);
+
+    @Override
+    @PreAuthorize("#node?.user?.name == authentication?.name")
+    Node save(@Param("node") Node node);
+
+    @Override
+    @PreAuthorize("@nodeRepository.findById(#id)?.user?.name == authentication?.name")
+    void deleteById(@Param("id") Long id);
 
 }

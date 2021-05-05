@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  *
  * @author abbie
  */
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+
 @RequestMapping(NodeController.PATH)
 @RestController
 class NodeController {
