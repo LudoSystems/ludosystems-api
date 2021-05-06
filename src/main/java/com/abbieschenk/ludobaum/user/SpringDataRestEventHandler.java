@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 @RepositoryEventHandler
 public class SpringDataRestEventHandler {
 
-    private final LudoBaumUserRepository userRepository;
+    private final LudobaumUserRepository userRepository;
 
     @Autowired
-    public SpringDataRestEventHandler(LudoBaumUserRepository userRepository) {
+    public SpringDataRestEventHandler(LudobaumUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -23,8 +23,8 @@ public class SpringDataRestEventHandler {
     @HandleBeforeSave
     public void applyUserInformationUsingSecurityContext(Node node) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        LudobaumUser ludobaumUser = this.userRepository.findByName(name);
+        LudobaumUser user = this.userRepository.findByName(name);
 
-        node.setUser(ludobaumUser);
+        node.setUser(user);
     }
 }

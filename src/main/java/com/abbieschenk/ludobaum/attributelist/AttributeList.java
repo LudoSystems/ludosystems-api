@@ -1,17 +1,13 @@
 package com.abbieschenk.ludobaum.attributelist;
 
+import com.abbieschenk.ludobaum.attributelistelement.AttributeListElement;
+import com.abbieschenk.ludobaum.user.LudobaumUser;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.abbieschenk.ludobaum.attributelistelement.AttributeListElement;
 
 @Entity
 public class AttributeList {
@@ -24,6 +20,11 @@ public class AttributeList {
 
 	@OneToMany(mappedBy = "list", fetch = FetchType.LAZY, orphanRemoval = true)
 	private Set<AttributeListElement> elements = new HashSet<>();
+
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private LudobaumUser user;
 
 	public AttributeList() {
 	}
@@ -75,4 +76,11 @@ public class AttributeList {
 		return "AttributeList{id=" + this.id + ", name='" + this.name + "'}";
 	}
 
+	public LudobaumUser getUser() {
+		return user;
+	}
+
+	public void setUser(LudobaumUser user) {
+		this.user = user;
+	}
 }

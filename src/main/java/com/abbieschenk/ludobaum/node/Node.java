@@ -158,7 +158,7 @@ public class Node {
         return user;
     }
 
-    public void setUser(LudobaumUser ludobaumUser) {
-        this.user = ludobaumUser;
+    public void setUser(LudobaumUser user) {
+        this.user = user;
     }
 }

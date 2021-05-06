@@ -1,5 +1,6 @@
 package com.abbieschenk.ludobaum.user;
 
+import com.abbieschenk.ludobaum.attributelist.AttributeList;
 import com.abbieschenk.ludobaum.node.Node;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -34,6 +35,10 @@ public class LudobaumUser implements UserDetails {
     @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Node> nodes = new HashSet<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<AttributeList> attributeLists = new HashSet<>();
 
     @Transient
     private final Set<GrantedAuthority> authorities = new HashSet<>();
@@ -138,12 +143,12 @@ public class LudobaumUser implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LudobaumUser ludobaumUser = (LudobaumUser) o;
-        return Objects.equals(id, ludobaumUser.id) &&
-                Objects.equals(name, ludobaumUser.name) &&
-                Objects.equals(password, ludobaumUser.password) &&
-                Objects.equals(email, ludobaumUser.email) &&
-                Objects.equals(role, ludobaumUser.role);
+        LudobaumUser user = (LudobaumUser) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(role, user.role);
     }
 
     @Override
@@ -153,11 +158,19 @@ public class LudobaumUser implements UserDetails {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "LudobaumUser{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", roles=" + role +
                 '}';
+    }
+
+    public Set<AttributeList> getAttributeLists() {
+        return attributeLists;
+    }
+
+    public void setAttributeLists(Set<AttributeList> attributeLists) {
+        this.attributeLists = attributeLists;
     }
 }

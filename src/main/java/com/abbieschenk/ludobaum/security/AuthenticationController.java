@@ -74,7 +74,7 @@ public class AuthenticationController {
 
             userService.addUser(user);
 
-            response = ResponseEntity.ok("User registered.");
+            response = ResponseEntity.ok("LudobaumUser registered.");
         }
 
         return response;

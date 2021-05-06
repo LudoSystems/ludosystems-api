@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class LudobaumUserService implements UserDetailsService {
 
-    private final LudoBaumUserRepository repository;
+    private final LudobaumUserRepository repository;
 
     @Autowired
-    public LudobaumUserService(LudoBaumUserRepository repository) {
+    public LudobaumUserService(LudobaumUserRepository repository) {
         this.repository = repository;
     }
 
