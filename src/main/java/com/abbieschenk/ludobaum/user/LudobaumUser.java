@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -40,9 +41,6 @@ public class LudobaumUser implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<AttributeList> attributeLists = new HashSet<>();
 
-    @Transient
-    private final Set<GrantedAuthority> authorities = new HashSet<>();
-
     protected LudobaumUser() {
     }
 
@@ -50,7 +48,6 @@ public class LudobaumUser implements UserDetails {
         this.name = name;
         this.email = email;
         this.role = role;
-        this.authorities.add(role);
 
         this.setPassword(password);
     }
@@ -65,10 +62,7 @@ public class LudobaumUser implements UserDetails {
 
     @Override
     public Set<GrantedAuthority> getAuthorities() {
-        if (this.authorities.isEmpty()) {
-            this.authorities.add(this.role);
-        }
-        return this.authorities;
+        return Collections.singleton(this.role);
     }
 
     public String getPassword() {
@@ -93,9 +87,6 @@ public class LudobaumUser implements UserDetails {
 
     public void setRole(LudobaumUserRole role) {
         this.role = role;
-
-        this.authorities.clear();
-        this.authorities.add(role);
     }
 
     public String getEmail() {

@@ -15,6 +15,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles unauthorized authentication requests.
+ *
+ * @author abbie
+ */
 @Component
 public class AuthenticationUnauthorizedHandler implements AuthenticationEntryPoint {
 

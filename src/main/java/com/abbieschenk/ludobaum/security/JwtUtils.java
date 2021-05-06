@@ -16,6 +16,11 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
+/**
+ * Utility class for working with jwt authentication.
+ *
+ * @author abbie
+ */
 @Component
 public class JwtUtils {
 
