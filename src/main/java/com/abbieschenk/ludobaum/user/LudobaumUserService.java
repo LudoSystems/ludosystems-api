@@ -1,6 +1,7 @@
 package com.abbieschenk.ludobaum.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,16 @@ public class LudobaumUserService implements UserDetailsService {
     @Autowired
     public LudobaumUserService(LudobaumUserRepository repository) {
         this.repository = repository;
+    }
+
+    /**
+     * Get the current logged in {@link LudobaumUser}
+     *
+     * @return The current logged in {@link LudobaumUser}
+     */
+    public LudobaumUser getCurrentUser() {
+        final String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        return this.loadUserByUsername(name);
     }
 
     /**

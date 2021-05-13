@@ -3,6 +3,7 @@ package com.abbieschenk.ludobaum.node;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -11,11 +12,18 @@ import java.util.Set;
 
 /**
  * A {@link JpaRepository} for {@link Node} entities.
+ * <p>
+ * TODO Annoyingly, Spring does not really support {@link Optional} in Spring Expression Language.
+ * If it ever does, the returned valules below should be updated as appropriate.
  *
  * @author abbie
  */
 @PreAuthorize("hasAuthority('USER')")
 interface NodeRepository extends JpaRepository<Node, Long> {
+
+    @Override
+    @PostAuthorize("returnObject.user?.name == authentication.name")
+    Node getOne(Long id);
 
     /**
      * Find a {@link Node} by its ID in the database, and load all of its
@@ -26,13 +34,13 @@ interface NodeRepository extends JpaRepository<Node, Long> {
      */
     @Query("SELECT n " //
             + "FROM Node n " //
-            + "JOIN FETCH n.attributes AS a " //
-            + "JOIN FETCH n.children " //
-            + "JOIN FETCH a.list l " //
-            + "JOIN FETCH l.elements " //
+            + "LEFT JOIN FETCH n.attributes AS a " //
+            + "LEFT JOIN FETCH n.children " //
+            + "LEFT JOIN FETCH a.list l " //
+            + "LEFT JOIN FETCH l.elements " //
             + "WHERE n.id = (:id)")
-    @PreAuthorize("@nodeRepository.findById(#id)?.user?.name == authentication?.name")
-    Optional<Node> findByIdAndLoad(@Param("id") Long id);
+    @PostAuthorize("returnObject.user?.name == authentication.name")
+    Node findByIdAndLoad(@Param("id") Long id);
 
     /**
      * Find all {@link Node}s in the database, and load all of their lazy-loaded
@@ -49,6 +57,22 @@ interface NodeRepository extends JpaRepository<Node, Long> {
     @PostFilter("filterObject.user?.name == authentication.name")
     Set<Node> findAllAndLoad();
 
+    /**
+     * Find all root {@link Node}s in the database, i.e. those without any
+     * parents, or without any node_connections.
+     *
+     * @return A set of root {@link Node}s.
+     */
+    @Query("SELECT DISTINCT n " //
+            + "FROM Node n " //
+            + "LEFT JOIN FETCH n.attributes AS a " //
+            + "LEFT JOIN FETCH n.children " //
+            + "LEFT JOIN FETCH a.list l " //
+            + "LEFT JOIN FETCH l.elements " //
+            + "WHERE n.parents IS EMPTY")
+    @PostFilter("filterObject.user?.name == authentication.name")
+    Set<Node> findRoots();
+
     @Override
     @PreAuthorize("#node?.user?.name == authentication?.name")
     void delete(@Param("node") Node node);
@@ -57,8 +81,8 @@ interface NodeRepository extends JpaRepository<Node, Long> {
     @PreAuthorize("#node?.user?.name == authentication?.name")
     Node save(@Param("node") Node node);
 
-    @Override
-    @PreAuthorize("@nodeRepository.findById(#id)?.user?.name == authentication?.name")
-    void deleteById(@Param("id") Long id);
 
+    @Override
+    @PreAuthorize("@nodeRepository.getOne(#id).user?.name == authentication?.name")
+    void deleteById(@Param("id") Long id);
 }

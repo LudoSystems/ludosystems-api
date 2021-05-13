@@ -7,56 +7,75 @@ import java.util.Set;
 
 /**
  * Implementation of {@link NodeService}.
- * 
- * @author abbie
  *
+ * @author abbie
  */
 @Service
 @Transactional(readOnly = true)
 public class NodeServiceImpl implements NodeService {
+    private final NodeRepository repository;
 
-	private final NodeRepository repository;
+    public NodeServiceImpl(NodeRepository repository) {
+        this.repository = repository;
+    }
 
-	public NodeServiceImpl(NodeRepository repository) {
-		this.repository = repository;
-	}
+    @Override
+    public Set<Node> getNodes() {
+        return repository.findAllAndLoad();
+    }
 
-	@Override
-	public Set<Node> getNodes() {
-		return repository.findAllAndLoad();
-	}
+    @Override
+    public Set<Node> getRoots() {
+        return repository.findRoots();
+    }
 
-	@Override
-	public Node getNode(Long id) {
-		return repository.findByIdAndLoad(id).orElseThrow(() -> new NodeNotFoundException(id));
-	}
+    @Override
+    public Node getNode(Long id) {
+        final Node node = repository.findByIdAndLoad(id);
 
-	@Override
-	@Transactional
-	public void deleteNode(Long id) {
-		repository.deleteById(id);
-	}
+        if (node == null) {
+            throw new NodeNotFoundException(id);
+        }
 
-	@Override
-	@Transactional
-	public Node addNode(Node node) {
-		return repository.save(node);
-	}
+        return node;
+    }
 
-	@Override
-	@Transactional
-	public Node replaceNode(Node node, Long id) {
-		return repository.findById(id).map(existingNode -> {
-			existingNode.setPosX(node.getPosX());
-			existingNode.setPosY(node.getPosY());
+    @Override
+    @Transactional
+    public void deleteNode(Long id) {
+        repository.deleteById(id);
+    }
 
-			// TODO: each of the attributes may need to have its parents updated here.
-			existingNode.setAttributes(node.getAttributes());
-			existingNode.setChildren(node.getChildren());
-			return repository.save(existingNode);
-		}).orElseGet(() -> {
-			node.setId(id);
-			return this.addNode(node);
-		});
-	}
+    @Override
+    @Transactional
+    public Node addNode(Node node) {
+        return repository.save(node);
+    }
+
+    @Override
+    @Transactional
+    public Node replaceNode(Node node, Long id) {
+        return repository.findById(id).map(existingNode -> {
+            existingNode.setPosX(node.getPosX());
+            existingNode.setPosY(node.getPosY());
+            existingNode.setUser(node.getUser());
+
+            // TODO: each of the attributes may need to have its parents updated here.
+            existingNode.setAttributes(node.getAttributes());
+            existingNode.setChildren(node.getChildren());
+
+            return repository.save(existingNode);
+        }).orElseGet(() -> {
+            node.setId(id);
+            return this.addNode(node);
+        });
+    }
+
+    @Override
+    public Node updateNode(Node updated) {
+
+        // TODO ??
+        
+        return repository.save(updated);
+    }
 }

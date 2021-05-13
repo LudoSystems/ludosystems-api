@@ -24,7 +24,7 @@ import java.util.Set;
 public class Node {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long posX;
@@ -41,8 +41,8 @@ public class Node {
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "node_connection", joinColumns = {@JoinColumn(name = "tail_node_id")}, inverseJoinColumns = {
-            @JoinColumn(name = "head_node_id")})
+    @JoinTable(name = "node_connection", joinColumns = {@JoinColumn(name = "head_node_id")}, inverseJoinColumns = {
+            @JoinColumn(name = "tail_node_id")})
     private Set<Node> children = new HashSet<>();
 
     @JsonIgnore
