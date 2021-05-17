@@ -107,6 +107,15 @@ public class Node {
     }
 
     /**
+     * Add a new child {@link Node} to this {@link Node}.
+     *
+     * @param node The child {@link Node} to add.
+     */
+    public void addChild(Node node) {
+        this.children.add(node);
+    }
+
+    /**
      * Gets the parents in the Ludobaum Node graph mapped by the node_connection
      * table. Note that these are lazy-loaded and must be dealt with accordingly.
      *

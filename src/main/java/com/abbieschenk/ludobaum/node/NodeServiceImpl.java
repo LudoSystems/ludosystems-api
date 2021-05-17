@@ -86,4 +86,26 @@ public class NodeServiceImpl implements NodeService {
 
         return repository.save(node);
     }
+
+    @Override
+    @Transactional
+    public Node connectNodes(Long id, Long childId) {
+        final Node node = this.getNode(id);
+        final Node child = this.getNode(childId);
+
+        node.getChildren().add(child);
+
+        return repository.save(node);
+    }
+
+    @Override
+    @Transactional
+    public Node disconnectNodes(Long id, Long childId) {
+        final Node node = this.getNode(id);
+        final Node child = this.getNode(childId);
+
+        node.getChildren().remove(child);
+
+        return repository.save(node);
+    }
 }

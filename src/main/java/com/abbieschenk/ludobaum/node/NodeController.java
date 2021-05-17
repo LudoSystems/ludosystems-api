@@ -71,6 +71,16 @@ class NodeController {
         return this.createResponseEntity(nodeService.addNode(node));
     }
 
+    @PatchMapping("/connect" + PATH_ID)
+    public ResponseEntity<?> connectNodes(@RequestBody Long childId, @PathVariable Long id) {
+        return this.createResponseEntity(nodeService.connectNodes(id, childId));
+    }
+
+    @PatchMapping("/disconnect" + PATH_ID)
+    public ResponseEntity<?> disconnectNodes(@RequestBody Long childId, @PathVariable Long id) {
+        return this.createResponseEntity(nodeService.disconnectNodes(id, childId));
+    }
+
     @GetMapping(PATH_ID)
     public EntityModel<Node> one(@PathVariable("id") Long id) {
         return assembler.toModel(nodeService.getNode(id));
@@ -81,7 +91,7 @@ class NodeController {
         return this.createResponseEntity(nodeService.replaceNode(node, id));
     }
 
-    @PatchMapping(  "/address" + PATH_ID)
+    @PatchMapping("/address" + PATH_ID)
     public ResponseEntity<?> updateNodeAddress(@RequestBody NodePositionUpdateRequest request, @PathVariable Long id) {
         return this.createResponseEntity(nodeService.updateNodePosition(id, request.getPosX(), request.getPosY()));
     }

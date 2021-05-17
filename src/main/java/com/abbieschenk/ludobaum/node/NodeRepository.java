@@ -6,7 +6,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreFilter;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -80,7 +82,6 @@ interface NodeRepository extends JpaRepository<Node, Long> {
     @Override
     @PreAuthorize("#node?.user?.name == authentication?.name")
     Node save(@Param("node") Node node);
-
 
     @Override
     @PreAuthorize("@nodeRepository.getOne(#id).user?.name == authentication?.name")
