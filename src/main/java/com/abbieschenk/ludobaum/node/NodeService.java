@@ -47,8 +47,8 @@ public interface NodeService {
     Node addNode(Node node);
 
     /**
-     * Replace an existing {@link Node} with a new Node by its ID. If no Node with
-     * the ID exists, this will add the Node as a new Node with the provided ID.
+     * Replace an existing {@link Node} with a new Node by its ID. If no Node with the ID exists, this will add the
+     * Node as a new Node with the provided ID.
      *
      * @param node The new {@link Node}
      * @param id   The existing {@link Node}'s ID
@@ -56,5 +56,15 @@ public interface NodeService {
      */
     Node replaceNode(Node node, Long id);
 
-    Node updateNode(Node updated);
+    /**
+     * Update the x and y position of a {@link Node}
+     *
+     * @param id   The id of the node to update.
+     * @param posX The new x position of the node. If this is null, the position will not be updated. If this is not
+     *             desired behaviour, it should be handled elsewhere, such as in the request body.
+     * @param posY The new y position of the node. If this is null, the position will not be updated. If this is not
+     *             desired behaviour, it should be handled elsewhere, such as in the request body.
+     * @return The node that was updated.
+     */
+    Node updateNodePosition(Long id, Long posX, Long posY);
 }

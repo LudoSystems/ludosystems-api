@@ -1,16 +1,11 @@
 package com.abbieschenk.ludobaum.node;
 
 import com.abbieschenk.ludobaum.user.LudobaumUserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,10 +68,7 @@ class NodeController {
             node.setUser(this.userService.getCurrentUser());
         }
 
-        final EntityModel<Node> entityModel = assembler.toModel(nodeService.addNode(node));
-
-        return ResponseEntity.created(
-                entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
+        return this.createResponseEntity(nodeService.addNode(node));
     }
 
     @GetMapping(PATH_ID)
@@ -86,28 +78,12 @@ class NodeController {
 
     @PutMapping(PATH_ID)
     public ResponseEntity<?> replaceNode(@RequestBody Node node, @PathVariable Long id) {
-        EntityModel<Node> entityModel = assembler.toModel(nodeService.replaceNode(node, id));
-
-        return ResponseEntity.created(
-                entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
+        return this.createResponseEntity(nodeService.replaceNode(node, id));
     }
 
-    @PatchMapping(path = PATH_ID, consumes = "application/json-patch+json")
-    public ResponseEntity<?> updateNode(@RequestBody JsonPatch patch, @PathVariable Long id) {
-
-        try {
-            Node node = nodeService.getNode(id);
-            Node patched = this.applyPatchToNode(patch, node);
-
-            nodeService.updateNode(patched);
-
-            return ResponseEntity.ok(patched);
-        } catch (JsonPatchException | JsonProcessingException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        } catch (NodeNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
+    @PatchMapping(  "/address" + PATH_ID)
+    public ResponseEntity<?> updateNodeAddress(@RequestBody NodePositionUpdateRequest request, @PathVariable Long id) {
+        return this.createResponseEntity(nodeService.updateNodePosition(id, request.getPosX(), request.getPosY()));
     }
 
     @DeleteMapping(PATH_ID)
@@ -117,8 +93,18 @@ class NodeController {
         return ResponseEntity.noContent().build();
     }
 
-    private Node applyPatchToNode(JsonPatch patch, Node node) throws JsonPatchException, JsonProcessingException {
-        JsonNode patched = patch.apply(objectMapper.convertValue(node, JsonNode.class));
-        return objectMapper.treeToValue(patched, Node.class);
+    /**
+     * Creates a response entity with links to itself from a single {@link Node} object.
+     *
+     * @param node The {@link Node} to create the response entity for.
+     * @return The response entity for the {@link Node}
+     */
+    private ResponseEntity<?> createResponseEntity(Node node) {
+        final EntityModel<Node> entityModel = assembler.toModel(node);
+
+        return ResponseEntity.created(
+                entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 }
+
+

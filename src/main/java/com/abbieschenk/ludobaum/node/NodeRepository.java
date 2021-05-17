@@ -13,8 +13,8 @@ import java.util.Set;
 /**
  * A {@link JpaRepository} for {@link Node} entities.
  * <p>
- * TODO Annoyingly, Spring does not really support {@link Optional} in Spring Expression Language.
- * If it ever does, the returned valules below should be updated as appropriate.
+ * TODO Annoyingly, Spring does not support {@link Optional} in Spring Expression Language. If it ever does, the
+ * returned values below should be updated as appropriate.
  *
  * @author abbie
  */

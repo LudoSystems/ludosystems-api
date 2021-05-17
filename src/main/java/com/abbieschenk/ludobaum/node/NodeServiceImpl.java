@@ -72,10 +72,18 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
-    public Node updateNode(Node updated) {
+    @Transactional
+    public Node updateNodePosition(Long id, Long posX, Long posY) {
+        final Node node = this.getNode(id);
 
-        // TODO ??
-        
-        return repository.save(updated);
+        if (posX != null) {
+            node.setPosX(posX);
+        }
+
+        if (posY != null) {
+            node.setPosY(posY);
+        }
+
+        return repository.save(node);
     }
 }
