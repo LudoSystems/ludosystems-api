@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents a node entity in the Ludobaum graph, and in the associated
@@ -37,7 +35,8 @@ public class Node {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "node", fetch = FetchType.LAZY)
-    private Set<NodeAttribute> attributes = new HashSet<>();
+    @OrderBy("sortOrder ASC")
+    private List<NodeAttribute> attributes = new ArrayList<>();
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToMany(fetch = FetchType.LAZY)
@@ -83,11 +82,11 @@ public class Node {
      *
      * @return The children of this node.
      */
-    public Set<NodeAttribute> getAttributes() {
+    public List<NodeAttribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(Set<NodeAttribute> attributes) {
+    public void setAttributes(List<NodeAttribute> attributes) {
         this.attributes = attributes;
     }
 

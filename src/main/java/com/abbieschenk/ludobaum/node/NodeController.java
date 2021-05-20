@@ -44,7 +44,7 @@ class NodeController {
 
     @GetMapping()
     public CollectionModel<EntityModel<Node>> all() {
-        List<EntityModel<Node>> nodes;
+        final List<EntityModel<Node>> nodes;
 
         nodes = nodeService.getNodes().stream().map(assembler::toModel).collect(Collectors.toList());
 
@@ -86,7 +86,8 @@ class NodeController {
         return assembler.toModel(nodeService.getNode(id));
     }
 
-    @PutMapping(PATH_ID)
+    // @PutMapping(PATH_ID)
+    // TODO This is currently disabled as it has been neither used nor tested.
     public ResponseEntity<?> replaceNode(@RequestBody Node node, @PathVariable Long id) {
         return this.createResponseEntity(nodeService.replaceNode(node, id));
     }

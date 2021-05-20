@@ -82,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //TODO csrf should NOT be entirely disabled. See: https://www.marcobehler.com/guides/spring-security
+        //TODO csrf should likely not be entirely disabled. See: https://www.marcobehler.com/guides/spring-security
 
         http
                 .cors().and()

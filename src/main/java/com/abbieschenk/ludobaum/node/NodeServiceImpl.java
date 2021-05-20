@@ -60,7 +60,6 @@ public class NodeServiceImpl implements NodeService {
             existingNode.setPosY(node.getPosY());
             existingNode.setUser(node.getUser());
 
-            // TODO: each of the attributes may need to have its parents updated here.
             existingNode.setAttributes(node.getAttributes());
             existingNode.setChildren(node.getChildren());
 
