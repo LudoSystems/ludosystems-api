@@ -15,7 +15,6 @@ public class TextAttributeServiceImpl implements NodeAttributeService<TextAttrib
         this.repository = repository;
     }
 
-
     @Override
     @Transactional
     public TextAttribute updateAttribute(Long id, TextAttributeUpdateRequest updateRequest) {

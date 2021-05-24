@@ -7,18 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(NodeAttributeController.PATH)
-public abstract class NodeAttributeController<T extends NodeAttribute, U extends NodeAttributeUpdateRequest> {
-    private final NodeAttributeService attributeService;
+public abstract class NodeAttributeController<U extends NodeAttributeUpdateRequest> {
 
-    // TODO ugly
+    protected static final String PATH = "/attributes";
+    private static final String PATH_ID = "/{id}";
+
     @Autowired
     private NodeAttributeModelAssembler assembler;
 
-    public static final String REL = "attributes";
-    public static final String PATH = "/" + REL;
-
-    private static final String PATH_ID = "/{id}";
+    private final NodeAttributeService attributeService;
 
     public NodeAttributeController(NodeAttributeService attributeService) {
         this.attributeService = attributeService;
