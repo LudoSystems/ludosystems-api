@@ -1,4 +1,6 @@
-package com.abbieschenk.ludobaum.nodeattribute;
+package com.abbieschenk.ludobaum.nodeattribute.textattribute;
+
+import com.abbieschenk.ludobaum.nodeattribute.NodeAttribute;
 
 import java.util.Objects;
 

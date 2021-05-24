@@ -1,9 +1,10 @@
-package com.abbieschenk.ludobaum.nodeattribute;
+package com.abbieschenk.ludobaum.nodeattribute.numberattribute;
 
-import java.util.Objects;
+import com.abbieschenk.ludobaum.nodeattribute.NodeAttribute;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.util.Objects;
 
 @Entity
 @DiscriminatorValue(NumberAttribute.TYPE)

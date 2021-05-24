@@ -13,6 +13,7 @@ import java.util.Set;
 @Service
 @Transactional(readOnly = true)
 public class NodeServiceImpl implements NodeService {
+
     private final NodeRepository repository;
 
     public NodeServiceImpl(NodeRepository repository) {

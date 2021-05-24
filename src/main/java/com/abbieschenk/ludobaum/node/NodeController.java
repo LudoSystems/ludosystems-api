@@ -42,6 +42,11 @@ class NodeController {
         this.objectMapper = new ObjectMapper();
     }
 
+    @GetMapping(PATH_ID)
+    public EntityModel<Node> one(@PathVariable("id") Long id) {
+        return assembler.toModel(nodeService.getNode(id));
+    }
+
     @GetMapping()
     public CollectionModel<EntityModel<Node>> all() {
         final List<EntityModel<Node>> nodes;
@@ -79,11 +84,6 @@ class NodeController {
     @PatchMapping("/disconnect" + PATH_ID)
     public ResponseEntity<?> disconnectNodes(@RequestBody Long childId, @PathVariable Long id) {
         return this.createResponseEntity(nodeService.disconnectNodes(id, childId));
-    }
-
-    @GetMapping(PATH_ID)
-    public EntityModel<Node> one(@PathVariable("id") Long id) {
-        return assembler.toModel(nodeService.getNode(id));
     }
 
     // @PutMapping(PATH_ID)

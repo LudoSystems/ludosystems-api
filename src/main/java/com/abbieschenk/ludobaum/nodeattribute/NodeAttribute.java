@@ -1,25 +1,15 @@
 package com.abbieschenk.ludobaum.nodeattribute;
 
-import java.util.Objects;
-
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import com.abbieschenk.ludobaum.node.Node;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "attribute_type")
-public abstract class NodeAttribute {
+public abstract class NodeAttribute implements Comparable<NodeAttribute> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -89,5 +79,9 @@ public abstract class NodeAttribute {
 
 	protected String getAttributeString() {
 		return "id=" + this.id + ", name='" + this.name + "', node=" + this.node + ", sort-order=" + this.sortOrder;
+	}
+
+	public int compareTo(NodeAttribute other) {
+		return this.sortOrder.compareTo(other.sortOrder);
 	}
 }

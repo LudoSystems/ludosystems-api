@@ -1,6 +1,5 @@
 package com.abbieschenk.ludobaum.node;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,15 +26,15 @@ public interface NodeService {
     /**
      * Retrieve a {@link Node} by its ID.
      *
-     * @param id The ID of the {@link Node} to find
-     * @return The {@link Node}
+     * @param id The ID of the {@link Node} to find.
+     * @return The {@link Node}.
      */
     Node getNode(Long id);
 
     /**
      * Delete the {@link Node} by its ID.
      *
-     * @param id The ID of the {@link Node} to delete
+     * @param id The ID of the {@link Node} to delete.
      */
     void deleteNode(Long id);
 

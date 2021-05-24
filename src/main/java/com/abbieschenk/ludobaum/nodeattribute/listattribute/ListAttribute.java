@@ -1,15 +1,11 @@
-package com.abbieschenk.ludobaum.nodeattribute;
-
-import java.util.Objects;
-
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+package com.abbieschenk.ludobaum.nodeattribute.listattribute;
 
 import com.abbieschenk.ludobaum.attributelist.AttributeList;
 import com.abbieschenk.ludobaum.attributelistelement.AttributeListElement;
+import com.abbieschenk.ludobaum.nodeattribute.NodeAttribute;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @DiscriminatorValue(ListAttribute.TYPE)

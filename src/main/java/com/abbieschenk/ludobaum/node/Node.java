@@ -36,7 +36,7 @@ public class Node {
     @JsonManagedReference
     @OneToMany(mappedBy = "node", fetch = FetchType.LAZY)
     @OrderBy("sortOrder ASC")
-    private List<NodeAttribute> attributes = new ArrayList<>();
+    private SortedSet<NodeAttribute> attributes = new TreeSet<>();
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToMany(fetch = FetchType.LAZY)
@@ -82,11 +82,11 @@ public class Node {
      *
      * @return The children of this node.
      */
-    public List<NodeAttribute> getAttributes() {
+    public SortedSet<NodeAttribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<NodeAttribute> attributes) {
+    public void setAttributes(SortedSet<NodeAttribute> attributes) {
         this.attributes = attributes;
     }
 
