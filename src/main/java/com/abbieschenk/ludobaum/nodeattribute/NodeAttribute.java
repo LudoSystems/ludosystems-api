@@ -24,6 +24,8 @@ public abstract class NodeAttribute implements Comparable<NodeAttribute> {
 
 	private String name;
 
+	public abstract String getType();
+
 	public Long getId() {
 		return id;
 	}

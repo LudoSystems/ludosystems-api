@@ -2,10 +2,9 @@ package com.abbieschenk.ludobaum.nodeattribute.textattribute;
 
 import com.abbieschenk.ludobaum.nodeattribute.NodeAttribute;
 
-import java.util.Objects;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.util.Objects;
 
 @Entity
 @DiscriminatorValue(TextAttribute.TYPE)
@@ -21,6 +20,11 @@ public class TextAttribute extends NodeAttribute {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	@Override
+	public String getType() {
+		return TextAttribute.TYPE;
 	}
 
 	@Override

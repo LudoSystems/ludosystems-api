@@ -38,6 +38,11 @@ public class ListAttribute extends NodeAttribute {
 	}
 
 	@Override
+	public String getType() {
+		return ListAttribute.TYPE;
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (!(super.equals(o) || o instanceof ListAttribute)) {
 			return false;

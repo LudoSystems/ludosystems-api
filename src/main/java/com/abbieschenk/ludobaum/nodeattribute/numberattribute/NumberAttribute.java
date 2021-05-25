@@ -23,6 +23,11 @@ public class NumberAttribute extends NodeAttribute {
 	}
 
 	@Override
+	public String getType() {
+		return NumberAttribute.TYPE;
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (!(super.equals(o) || o instanceof NumberAttribute)) {
 			return false;
