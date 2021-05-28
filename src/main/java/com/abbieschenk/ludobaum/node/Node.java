@@ -91,6 +91,18 @@ public class Node {
     }
 
     /**
+     * Get the max sort order of this {@link Node}'s {@link NodeAttribute}s.
+     *
+     * @return
+     */
+    public Long getMaxAttributeSortOrder() {
+        return this.getAttributes().stream()
+                .map(NodeAttribute::getSortOrder)
+                .max(Comparator.naturalOrder())
+                .orElse(0L);
+    }
+
+    /**
      * Gets the children in the Ludobaum Node graph mapped by the node_connection
      * table. Note that these are lazy-loaded and must be dealt with accordingly,
      * likely with a {@link Transactional} annotation on the method.

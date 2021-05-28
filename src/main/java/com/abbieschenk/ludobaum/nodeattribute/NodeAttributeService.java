@@ -1,6 +1,6 @@
 package com.abbieschenk.ludobaum.nodeattribute;
 
-import java.util.SortedSet;
+import com.abbieschenk.ludobaum.node.Node;
 
 public interface NodeAttributeService<T extends NodeAttribute, U extends NodeAttributeUpdateRequest> {
 
@@ -22,4 +22,18 @@ public interface NodeAttributeService<T extends NodeAttribute, U extends NodeAtt
      */
     T getAttribute(Long id);
 
+    /**
+     * Create and add a {@link NodeAttribute} to a {@link Node} based on its id. Gets inserted at the end.
+     *
+     * @param node The {@link Node} to create an attribute on.
+     * @return The newly created and added {@link NodeAttribute}
+     */
+    T createAttribute(Node node);
+
+    /**
+     * Delete a {@link NodeAttribute} by id.
+     *
+     * @param id The id of the {@link NodeAttribute} to delete.
+     */
+    void deleteAttribute(Long id);
 }

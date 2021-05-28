@@ -12,7 +12,7 @@ import java.util.Objects;
 public abstract class NodeAttribute implements Comparable<NodeAttribute> {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@JsonBackReference

@@ -1,5 +1,6 @@
 package com.abbieschenk.ludobaum.nodeattribute.numberattribute;
 
+import com.abbieschenk.ludobaum.node.Node;
 import com.abbieschenk.ludobaum.nodeattribute.NodeAttributeNotFoundException;
 import com.abbieschenk.ludobaum.nodeattribute.NodeAttributeService;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,28 @@ public class NumberAttributeServiceImpl implements NodeAttributeService<NumberAt
         }
 
         return attribute;
+    }
+
+    @Override
+    @Transactional
+    public NumberAttribute createAttribute(Node node) {
+        final NumberAttribute attribute = new NumberAttribute();
+
+        // TODO just make this a constructor.
+
+        attribute.setName("Number");
+        attribute.setNumber(0L);
+        attribute.setSortOrder(node.getMaxAttributeSortOrder() + 1);
+        attribute.setNode(node);
+
+        repository.save(attribute);
+
+        return attribute;
+    }
+
+    @Override
+    @Transactional
+    public void deleteAttribute(Long id) {
+        repository.deleteById(id);
     }
 }
