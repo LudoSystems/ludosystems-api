@@ -1,15 +1,23 @@
 package com.abbieschenk.ludobaum.node;
 
 import com.abbieschenk.ludobaum.user.LudobaumUserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -66,6 +74,51 @@ class NodeController {
         return CollectionModel.of(nodes,
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(NodeController.class).all()).withSelfRel());
     }
+
+    @GetMapping("/export-json")
+    public ResponseEntity<?> exportJson() {
+        final Set<Node> nodes = nodeService.getRoots();
+
+        final List<byte[]> nodeBytes = new ArrayList<>();
+
+        int arraySize = 0;
+        for(Node node : nodes) {
+            try {
+                final byte[] mapped = objectMapper.writeValueAsBytes(node);
+
+                nodeBytes.add(mapped);
+                arraySize += mapped.length;
+
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Could not write value of " + node + " to JSON");
+            }
+        }
+
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream(arraySize);
+
+        final byte[] openingTag = "{ \"ludoNodes\":[".getBytes();
+        final byte[] comma = ",".getBytes();
+        final byte[] closingTag = "]}".getBytes();
+
+        baos.write(openingTag, 0, openingTag.length);
+
+        for (byte[] node : nodeBytes) {
+            baos.write(node, 0, node.length);
+            baos.write(comma, 0, comma.length);
+        }
+
+        baos.write(closingTag, 0, closingTag.length);
+
+        final byte[] bytes = baos.toByteArray();
+
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=ludo-nodes.json")
+                .contentType(MediaType.APPLICATION_JSON)
+                .contentLength(bytes.length)
+                .body(new InputStreamResource(new ByteArrayInputStream(bytes)));
+    }
+
 
     @PostMapping("/add")
     public ResponseEntity<?> newNode(@RequestBody Node node) {

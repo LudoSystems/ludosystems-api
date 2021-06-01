@@ -95,6 +95,7 @@ public class Node {
      *
      * @return
      */
+    @JsonIgnore
     public Long getMaxAttributeSortOrder() {
         return this.getAttributes().stream()
                 .map(NodeAttribute::getSortOrder)
