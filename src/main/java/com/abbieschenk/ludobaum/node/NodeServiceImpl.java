@@ -93,6 +93,11 @@ public class NodeServiceImpl implements NodeService {
         final Node node = this.getNode(id);
         final Node child = this.getNode(childId);
 
+        if(node.equals(child)) {
+            throw new RuntimeException("Error connecting Node " + childId + " to Node " + id +
+                    ". Nodes cannot be added to themselves as children.");
+        }
+
         node.getChildren().add(child);
 
         return repository.save(node);
