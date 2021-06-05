@@ -16,7 +16,7 @@ public class AttributeList {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String name;
+	private String title;
 
 	@OneToMany(mappedBy = "list", fetch = FetchType.LAZY, orphanRemoval = true)
 	private Set<AttributeListElement> elements = new HashSet<>();
@@ -29,12 +29,12 @@ public class AttributeList {
 	public AttributeList() {
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String name) {
+		this.title = title;
 	}
 
 	public Set<AttributeListElement> getElements() {
@@ -63,17 +63,17 @@ public class AttributeList {
 
 		AttributeList attributeList = (AttributeList) o;
 
-		return Objects.equals(this.id, attributeList.id) && Objects.equals(this.name, attributeList.name);
+		return Objects.equals(this.id, attributeList.id) && Objects.equals(this.title, attributeList.title);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.id, this.name);
+		return Objects.hash(this.id, this.title);
 	}
 
 	@Override
 	public String toString() {
-		return "AttributeList{id=" + this.id + ", name='" + this.name + "'}";
+		return "AttributeList{id=" + this.id + ", name='" + this.title + "'}";
 	}
 
 	public LudobaumUser getUser() {

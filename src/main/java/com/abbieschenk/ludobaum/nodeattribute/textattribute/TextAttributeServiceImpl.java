@@ -21,7 +21,7 @@ public class TextAttributeServiceImpl implements NodeAttributeService<TextAttrib
     public TextAttribute updateAttribute(Long id, TextAttributeUpdateRequest updateRequest) {
         TextAttribute attribute = repository.getOne(id);
 
-        attribute.setName(updateRequest.getName());
+        attribute.setTitle(updateRequest.getTitle());
         attribute.setText(updateRequest.getText());
 
         return repository.save(attribute);
@@ -43,9 +43,7 @@ public class TextAttributeServiceImpl implements NodeAttributeService<TextAttrib
     public TextAttribute createAttribute(Node node) {
         final TextAttribute attribute = new TextAttribute();
 
-        // TODO just make this a constructor
-
-        attribute.setName("Text");
+        attribute.setTitle("Text");
         attribute.setText("");
         attribute.setSortOrder(node.getMaxAttributeSortOrder() + 1);
         attribute.setNode(node);

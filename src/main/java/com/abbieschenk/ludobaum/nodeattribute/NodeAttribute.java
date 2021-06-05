@@ -22,7 +22,7 @@ public abstract class NodeAttribute implements Comparable<NodeAttribute> {
 
 	private Long sortOrder;
 
-	private String name;
+	private String title;
 
 	public abstract String getType();
 
@@ -50,12 +50,12 @@ public abstract class NodeAttribute implements Comparable<NodeAttribute> {
 		this.sortOrder = sortOrder;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	@Override
@@ -70,17 +70,17 @@ public abstract class NodeAttribute implements Comparable<NodeAttribute> {
 
 		NodeAttribute attribute = (NodeAttribute) o;
 
-		return Objects.equals(this.id, attribute.id) && Objects.equals(this.name, attribute.name)
+		return Objects.equals(this.id, attribute.id) && Objects.equals(this.title, attribute.title)
 				&& Objects.equals(this.node, attribute.node) && Objects.equals(this.sortOrder, attribute.sortOrder);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.id, this.name, this.node, this.sortOrder);
+		return Objects.hash(this.id, this.title, this.node, this.sortOrder);
 	}
 
 	protected String getAttributeString() {
-		return "id=" + this.id + ", name='" + this.name + "', node=" + this.node + ", sort-order=" + this.sortOrder;
+		return "id=" + this.id + ", title='" + this.title + "', node=" + this.node + ", sort-order=" + this.sortOrder;
 	}
 
 	public int compareTo(NodeAttribute other) {

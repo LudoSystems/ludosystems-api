@@ -21,7 +21,7 @@ public class NumberAttributeServiceImpl implements NodeAttributeService<NumberAt
     public NumberAttribute updateAttribute(Long id, NumberAttributeUpdateRequest updateRequest) {
         NumberAttribute attribute = repository.getOne(id);
 
-        attribute.setName(updateRequest.getName());
+        attribute.setTitle(updateRequest.getTitle());
         attribute.setNumber(updateRequest.getNumber());
 
         return repository.save(attribute);
@@ -43,9 +43,7 @@ public class NumberAttributeServiceImpl implements NodeAttributeService<NumberAt
     public NumberAttribute createAttribute(Node node) {
         final NumberAttribute attribute = new NumberAttribute();
 
-        // TODO just make this a constructor.
-
-        attribute.setName("Number");
+        attribute.setTitle("Number");
         attribute.setNumber(0L);
         attribute.setSortOrder(node.getMaxAttributeSortOrder() + 1);
         attribute.setNode(node);
