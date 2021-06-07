@@ -9,14 +9,13 @@ import javax.persistence.*;
 import java.util.*;
 
 /**
- * Represents a node entity in the Ludobaum graph, and in the associated
- * database.
+ * Represents a node entity in the Ludo.Systems node graph, and in the associated database.
  * <p>
- * Note that {@link #attributes}, {@link #children}, and {@link #parents} are
- * all lazy-loaded. This means the general way to access Nodes should be through
- * a {@link NodeService}.
+ * Note that {@link #attributes}, {@link #children}, and {@link #parents} are all lazy-loaded. This means the general
+ * way to access Nodes should be via a {@link NodeService}.
  *
  * @author abbie
+ *
  */
 @Entity
 public class Node {
@@ -76,7 +75,7 @@ public class Node {
     }
 
     /**
-     * Gets the attributes in the Ludobaum Node graph mapped by the node_connection
+     * Gets the attributes in the Ludo.Systems Node graph mapped by the node_connection
      * table. Note that these are lazy-loaded and must be dealt with accordingly,
      * likely with a {@link Transactional} annotation on the method.
      *
@@ -104,7 +103,7 @@ public class Node {
     }
 
     /**
-     * Gets the children in the Ludobaum Node graph mapped by the node_connection
+     * Gets the children in the Ludo.Systems Node graph mapped by the node_connection
      * table. Note that these are lazy-loaded and must be dealt with accordingly,
      * likely with a {@link Transactional} annotation on the method.
      *
@@ -128,7 +127,7 @@ public class Node {
     }
 
     /**
-     * Gets the parents in the Ludobaum Node graph mapped by the node_connection
+     * Gets the parents in the Ludo.Systems Node graph mapped by the node_connection
      * table. Note that these are lazy-loaded and must be dealt with accordingly.
      *
      * @return The parents of this node.

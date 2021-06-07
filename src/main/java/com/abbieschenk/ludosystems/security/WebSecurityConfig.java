@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public WebSecurityConfig(LudoSystemsUserService userDetailsService,
                              AuthenticationUnauthorizedHandler unauthorizedHandler,
                              AuthenticationTokenFilter authenticationTokenFilter,
-                             @Value("${ludobaum.app.url}") String allowedOrigin) {
+                             @Value("${ludosystems.app.url}") String allowedOrigin) {
         this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
         this.authenticationTokenFilter = authenticationTokenFilter;

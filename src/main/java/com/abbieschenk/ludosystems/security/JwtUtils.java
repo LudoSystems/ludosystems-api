@@ -26,10 +26,10 @@ public class JwtUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${ludobaum.app.jwtSecret}")
+    @Value("${ludosystems.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${ludobaum.app.jwtExpirationMs}")
+    @Value("${ludosystems.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
     /**
