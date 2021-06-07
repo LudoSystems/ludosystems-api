@@ -12,11 +12,11 @@
 	</parent>
 
 	<groupId>com.abbieschenk</groupId>
-	<artifactId>ludobaum</artifactId>
+	<artifactId>ludosystems</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>ludobaum</name>
-	<description>API for Ludobaum, a dialogue tree editor.</description>
+	<name>Ludo.Systems</name>
+	<description>API for Ludo.Systems</description>
 
 	<properties>
 		<java.version>11</java.version>
