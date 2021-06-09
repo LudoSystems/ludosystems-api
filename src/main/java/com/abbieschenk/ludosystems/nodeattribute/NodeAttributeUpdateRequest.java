@@ -19,7 +19,7 @@ public abstract class NodeAttributeUpdateRequest {
         return title;
     }
 
-    public void setName(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 }
