@@ -54,8 +54,15 @@ public class AuthenticationController {
         user = (LudoSystemsUser) auth.getPrincipal();
         roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
+        if(true) {
+            return ResponseEntity.badRequest().body("Sorry, ludo.systems is not online right now.");
+        } else {
+            
+        
+
         return ResponseEntity.ok(
                 new JwtResponse(jwt, user.getId(), user.getUsername(), user.getEmail(), roles));
+        }
     }
 
     @PostMapping("/register")
@@ -65,7 +72,7 @@ public class AuthenticationController {
         if(true) {
             return ResponseEntity.badRequest().body("Sorry, ludo.systems is not online right now.");
         }
-        
+
         if (userService.getUserByName(request.getUsername()) != null) {
             response = ResponseEntity.badRequest().body("Error: A user already exists with this name.");
         } else if (userService.getUserByEmail(request.getEmail()) != null) {
