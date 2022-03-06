@@ -62,6 +62,10 @@ public class AuthenticationController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest request) {
         final ResponseEntity<?> response;
 
+        if(true) {
+            return ResponseEntity.badRequest().body("Sorry, ludo.systems is not online right now.");
+        }
+        
         if (userService.getUserByName(request.getUsername()) != null) {
             response = ResponseEntity.badRequest().body("Error: A user already exists with this name.");
         } else if (userService.getUserByEmail(request.getEmail()) != null) {
